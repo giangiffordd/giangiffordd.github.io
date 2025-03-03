@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TSA 2 Almario</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Futura&display=swap');
+
+        body {
+            font-family: 'Futura', sans-serif;
+            height: 100vh;
+            margin: 0;
+            display: grid;
+            place-items: center;
+            background-color: white;
+        }
+
+        .wrapper {
+            position: relative;
+            display: flex;
+            gap: 3rem;
+        }
+
+        .control-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .day-btn {
+            width: 130px;
+            padding: 10px 0;
+            border: 2px solid #000;
+            box-shadow: 3px 3px 5px rgba(0,0,0,0.15);
+            cursor: pointer;
+            font-size: 16px;
+            font-family: 'Futura', sans-serif;
+            transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+            text-align: center;
+        }
+
+        .day-btn:hover {
+            transform: scale(1.15);
+        }
+
+        #red { background-color: red; color: white; }
+        #orange { background-color: orange; }
+        #yellow { background-color: yellow; }
+        #green { background-color: green; color: white; }
+        #blue { background-color: blue; color: white; }
+        #indigo { background-color: indigo; color: white; }
+        #violet { background-color: violet; }
+
+        #display-area {
+            position: relative;
+            min-width: 300px;
+            min-height: 300px;
+        }
+
+        .animated-box {
+            width: 250px;
+            height: 250px;
+            border: 8px solid;
+            position: absolute;
+            top: -400px;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: top 1s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                        background-color 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="control-panel">
+            <button id="red" class="day-btn" data-bg="mistyrose">Monday</button>
+            <button id="orange" class="day-btn" data-bg="peachpuff">Tuesday</button>
+            <button id="yellow" class="day-btn" data-bg="lightyellow">Wednesday</button>
+            <button id="green" class="day-btn" data-bg="lightgreen">Thursday</button>
+            <button id="blue" class="day-btn" data-bg="lightblue">Friday</button>
+            <button id="indigo" class="day-btn" data-bg="lavender">Saturday</button>
+            <button id="violet" class="day-btn" data-bg="plum">Sunday</button>
+        </div>
+        <div id="display-area"></div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.day-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                animateBox(btn.id, btn.dataset.bg);
+            });
+        });
+
+        function animateBox(color, bgColor) {
+            const displayArea = document.getElementById('display-area');
+            const existingBox = displayArea.querySelector('.animated-box');
+            
+            if (existingBox) {
+                existingBox.style.top = '-400px';
+                setTimeout(() => existingBox.remove(), 800);
+            }
+            
+            const newBox = document.createElement('div');
+            newBox.className = 'animated-box';
+            newBox.style.borderColor = color;
+            newBox.style.backgroundColor = bgColor;
+            
+            displayArea.appendChild(newBox);
+            
+            requestAnimationFrame(() => {
+                newBox.style.top = '0';
+                
+                setTimeout(() => {
+                    newBox.style.backgroundColor = 'transparent';
+                }, 800);
+            });
+        }
+    </script>
+</body>
+</html>
