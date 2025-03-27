@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gian's Eatery</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: url('bg.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            min-height: 100vh;
+            font-family: 'Georgia', serif;
+        }
+
+        .header-text {
+            text-align: left;
+            margin-left: 20px;
+            padding: 20px 0;
+        }
+
+        .header-text h1 {
+            font-size: 48px; 
+            font-weight: bold;
+            color: #ffcc00; 
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            font-style: italic;
+        }
+
+        .header-text h2 {
+            font-size: 36px; 
+            color: #ffffff; 
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            font-style: italic;
+        }
+
+        .restaurant-card {
+            background-color: white;
+            color: black;
+            border-radius: 10px;
+            border: 3px solid white;
+            overflow: hidden;
+            margin: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease-in-out;
+            height: 500px; 
+            cursor: pointer; 
+        }
+
+        .restaurant-card:hover {
+            transform: scale(1.05);
+        }
+
+        .restaurant-card h5 {
+            background: yellow;
+            padding: 10px;
+            margin: 0;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .restaurant-card img {
+            width: 100%;
+            height: calc(100% - 50px);
+            object-fit: cover;
+        }
+
+        .card-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            text-align: center;
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .restaurant-card:hover .card-overlay {
+            opacity: 1;
+        }
+
+        .menu-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: yellow;
+            color: black;
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            z-index: 1001;
+            display: none;
+        }
+
+        .menu-btn:hover {
+            background: darkgreen;
+        }
+
+        .detail-card {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 1300px;
+            z-index: 1000;
+        }
+
+        .detail-card .card {
+            display: flex;
+            width: 100%;
+            height: 550px;
+            background: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            flex-direction: row; 
+        }
+
+        .detail-card .vertical-title {
+            writing-mode: vertical-lr;
+            text-orientation: mixed;
+            background: yellow;
+            padding: 10px;
+            font-weight: bold;
+            font-size: 18px;
+            color: black;
+            text-align: center;
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: rotate(180deg);
+        }
+
+        .detail-card .image-section {
+            width: 40%;
+            background: #ddd;
+            margin-left: 40px; 
+            display: flex;
+            align-items: flex-end; 
+            height: 100%;
+        }
+
+        .detail-card .image-section img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .detail-card .content-section {
+            padding: 20px;
+            width: 60%;
+        }
+
+        .detail-card .title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #d32f2f;
+        }
+
+        .detail-card .details {
+            font-size: 14px;
+            margin: 10px 0;
+            color: #444;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detail-card .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+        }
+
+        .detail-card .detail-row span {
+            flex: 1;
+            text-align: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .detail-card .detail-row span:nth-child(2) {
+            border-left: 2px solid #444;
+            padding-left: 15px;
+            min-height: 100%;
+        }
+
+        .detail-card .description {
+            font-size: 16px;
+            color: #000000;
+            line-height: 1.8;
+            font-family: 'Georgia', serif;
+            margin-top: 20px;
+            padding: 10px;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+    <a href="#" class="menu-btn" id="menuBtn">MAIN MENU</a>
+    <div class="overlay" id="overlay"></div>
+
+    <div class="header-text">
+        <h1>Gian's Eatery</h1>
+        <h2>Paborito ni Gian</h2>
+        <p>Produced by: GianLorenzo Almario</p>
+    </div>
+
+    <div class="container" id="menuContainer">
+        <div class="row justify-content-center">
+            <div class="col-md-3">
+                <div class="restaurant-card" data-food="Sinigang na Baboy">
+                    <h5>Sinigang na Baboy</h5>
+                    <img src="sinigang.jpg" alt="Sinigang na Baboy">
+                    <div class="card-overlay">
+                        A delicious sour soup topped with tender pork.
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="restaurant-card" data-food="Kalderetang Kambing">
+                    <h5>Kalderetang Kambing</h5>
+                    <img src="kaldereta.jpg" alt="Kalderetang Kambing">
+                    <div class="card-overlay">
+                        Rich and spicy goat meat stew.
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="restaurant-card" data-food="Fried Chicken">
+                    <h5>Fried Chicken</h5>
+                    <img src="chicken.jpg" alt="Fried Chicken">
+                    <div class="card-overlay">
+                        Crispy golden-brown chicken.
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="restaurant-card" data-food="Chicken Nuggets">
+                    <h5>Chicken Nuggets</h5>
+                    <img src="nuggets.jpg" alt="Chicken Nuggets">
+                    <div class="card-overlay">
+                        Bite-sized crispy chicken treats.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="detail-card" id="detailCard">
+        <div class="card">
+            <div class="vertical-title" id="detailTitle"></div>
+            <div class="image-section">
+                <img src="" alt="Restaurant Image" id="detailImage">
+            </div>
+            <div class="content-section">
+                <div class="title" id="detailTitle2"></div>
+                <div class="details">
+                    <div class="detail-row">
+                        <span>187 Caloocan City</span>
+                        <span>Category: <span id="detailCategory">Filipino</span></span>
+                    </div>
+                    <div class="detail-row">
+                        <span>T: 09762597574</span>
+                        <span>Open: 10 am to 10 pm</span>
+                    </div>
+                    <div class="detail-row">
+                        <span>W: Woodluck Ka Willy</span>
+                        <span>Price: ₱₱</span>
+                    </div>
+                </div>
+                <div class="description" id="detailDescription">
+                    <!-- Description will be dynamically inserted -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const restaurantCards = document.querySelectorAll('.restaurant-card');
+        const detailCard = document.getElementById('detailCard');
+        const menuBtn = document.getElementById('menuBtn');
+        const overlay = document.getElementById('overlay');
+        const menuContainer = document.getElementById('menuContainer');
+        const detailTitle = document.getElementById('detailTitle');
+        const detailTitle2 = document.getElementById('detailTitle2');
+        const detailImage = document.getElementById('detailImage');
+        const detailCategory = document.getElementById('detailCategory');
+        const detailDescription = document.getElementById('detailDescription');
+
+        const foodDetails = {
+            'Sinigang na Baboy': {
+                image: 'sinigang.jpg',
+                description: 'A classic Filipino sour soup featuring tender pork and a medley of vegetables. The tamarind-based broth gives a distinctive tangy flavor that perfectly balances the richness of the pork. Each spoonful offers a comforting and refreshing taste of traditional Filipino cuisine.'
+            },
+            'Kalderetang Kambing': {
+                image: 'kaldereta.jpg',
+                description: 'A hearty and spicy goat meat stew that showcases the bold flavors of Filipino cooking. Slow-cooked to perfection, the goat meat becomes tender and absorbs the rich, complex sauce made with tomatoes, liver paste, and various spices. A true testament to Filipino culinary expertise.'
+            },
+            'Fried Chicken': {
+                image: 'chicken.jpg',
+                description: 'Crispy, golden-brown fried chicken that promises a delightful crunch with every bite. Marinated in a special blend of spices and perfectly fried to achieve a beautiful, crisp exterior while maintaining juicy, tender meat inside. A universally loved dish with a local twist.'
+            },
+            'Chicken Nuggets': {
+                image: 'nuggets.jpg',
+                description: 'Bite-sized chicken nuggets that are crispy on the outside and tender on the inside. Made with high-quality chicken and coated in a light, seasoned breading, these nuggets are perfect for a quick snack or a crowd-pleasing appetizer. Served with your choice of dipping sauce.'
+            }
+        };
+
+        restaurantCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const food = card.dataset.food;
+                const details = foodDetails[food];
+
+                overlay.style.display = 'block';
+                menuContainer.style.display = 'none';
+                
+                detailCard.style.display = 'block';
+                menuBtn.style.display = 'block';
+
+                detailTitle.textContent = food;
+                detailTitle2.textContent = food;
+                detailImage.src = details.image;
+                detailDescription.textContent = details.description;
+            });
+        });
+
+        menuBtn.addEventListener('click', () => {
+            overlay.style.display = 'none';
+            menuContainer.style.display = 'block';
+            detailCard.style.display = 'none';
+            menuBtn.style.display = 'none';
+        });
+    </script>
+</body>
+</html>
